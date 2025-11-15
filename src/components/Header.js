@@ -19,7 +19,7 @@ const Header = () => {
         ></input>
         <button>
           <img
-            className="w-9 px-2 py-1 border border-gray-400 bg-gray-400 rounded-r-full"
+            className="w-9 px-2 py-1 border border-gray-400 bg-gray-200 rounded-r-full"
             alt="search"
             src={searchURL}
           />
