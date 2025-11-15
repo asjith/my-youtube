@@ -13,7 +13,7 @@ const Header = () => {
       </div>
       <div className="flex col-span-10 justify-self-center">
         <input
-          className="border border-gray-400 w-96 px-3 rounded-l-full text-xs"
+          className="border border-gray-400 w-52 px-3 rounded-l-full text-xs md:w-96"
           type="text"
           placeholder="Search"
         ></input>
