@@ -106,4 +106,16 @@ export const BUTTONLIST_BUTTONS = [
     id: 18,
     name: "Politics",
   },
+  {
+    id: 19,
+    name: "AI",
+  },
+  {
+    id: 20,
+    name: "Health",
+  },
+  {
+    id: 21,
+    name: "Gadgets",
+  },
 ];
