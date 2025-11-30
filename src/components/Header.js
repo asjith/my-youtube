@@ -3,12 +3,25 @@ import logoURL from "../icons/logo.svg";
 import searchURL from "../icons/search.svg";
 import profileURL from "../icons/profile.png";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { toggleSideBar } from "../utils/appSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const handleMenuClick = () => {
+    dispatch(toggleSideBar());
+  };
+
   return (
     <div className="grid grid-flow-col items-center m-2 p-2">
       <div className="flex col-span-1 gap-4">
-        <img className="w-5" alt="menu" src={menuURL} />
+        <img
+          className="w-5 cursor-pointer"
+          onClick={handleMenuClick}
+          alt="menu"
+          src={menuURL}
+        />
         <img className="w-7" alt="logo" src={logoURL} />
       </div>
       <div className="flex col-span-10 justify-self-center">

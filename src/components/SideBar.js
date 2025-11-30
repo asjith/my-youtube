@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux";
 import { SIDEBAR_BUTTONS } from "../utils/constants";
 
 const SideBar = () => {
+  const isSideBarOpen = useSelector((store) => store.app.isSideBarOpen);
+
+  if (!isSideBarOpen) return null;
+
   return (
     <div className="col-span-3 flex flex-col ">
       {SIDEBAR_BUTTONS.map((buttonInfo) => {
