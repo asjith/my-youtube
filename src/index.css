@@ -7,5 +7,6 @@
 }
 
 .slidder{
-    transform: translateX(-50%);
+    --move:0;
+    transform: translateX(calc(var(--move)* -50%));
 }
