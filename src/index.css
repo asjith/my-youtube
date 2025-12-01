@@ -10,3 +10,10 @@
     --move:0;
     transform: translateX(calc(var(--move)* -50%));
 }
+
+.video-title{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}

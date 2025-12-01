@@ -7,10 +7,15 @@ const SideBar = () => {
   if (!isSideBarOpen) return null;
 
   return (
-    <div className="col-span-3 flex flex-col ">
+    <div className="col-span-3 flex flex-col m-4">
       {SIDEBAR_BUTTONS.map((buttonInfo) => {
         return (
-          <button key={buttonInfo.id} className="text-left mx-2 p-2 text-xs">
+          <button
+            key={buttonInfo.id}
+            className={`text-left px-4 py-2 text-xs rounded-md ${
+              buttonInfo.id === 0 && "bg-gray-200 font-bold"
+            }`}
+          >
             {buttonInfo.name}
           </button>
         );

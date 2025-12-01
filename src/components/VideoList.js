@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { YOUTUBE_API } from "../utils/constants";
+import VideoCard from "./VideoCard";
 
 const VideoList = () => {
+  const [videoInfo, setVideoInfo] = useState([]);
+
   useEffect(() => {
     fetchYoutubeVideoDatas();
   }, []);
@@ -10,8 +13,16 @@ const VideoList = () => {
     const data = await fetch(YOUTUBE_API);
     const json = await data.json();
     console.log(json);
+    setVideoInfo(json.items);
   };
-  return <div>VideoList</div>;
+
+  if (videoInfo.length === 0) return null;
+
+  return (
+    <div className="m-4">
+      <VideoCard info={videoInfo[0]} />
+    </div>
+  );
 };
 
 export default VideoList;

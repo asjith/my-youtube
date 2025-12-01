@@ -64,7 +64,7 @@ const ButtonList = () => {
             return (
               <button
                 key={buttonInfo.id}
-                className="text-xs px-2 py-1 bg-gray-200 rounded-md"
+                className="text-xs px-2 py-1 bg-gray-200 rounded-md font-bold"
               >
                 {buttonInfo.name}
               </button>
