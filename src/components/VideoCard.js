@@ -58,8 +58,12 @@ const VideoCard = ({ info }) => {
   const duration = getDuration(publishedAt);
 
   return (
-    <div className="w-72 p-1 cursor-pointer shadow-md rounded-md">
-      <img className="rounded-md" src={thumbnails.medium.url} alt="thumbnail" />
+    <div className="p-1 cursor-pointer shadow-md rounded-md">
+      <img
+        className="rounded-md w-full"
+        src={thumbnails.medium.url}
+        alt="thumbnail"
+      />
       <div className="flex gap-2 py-2">
         {channelInfo && (
           <img

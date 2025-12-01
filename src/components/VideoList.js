@@ -19,8 +19,10 @@ const VideoList = () => {
   if (videoInfo.length === 0) return null;
 
   return (
-    <div className="m-4">
-      <VideoCard info={videoInfo[0]} />
+    <div className="m-4 grid  gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      {videoInfo.map((info) => (
+        <VideoCard key={info.id} info={info} />
+      ))}
     </div>
   );
 };
