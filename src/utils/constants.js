@@ -123,3 +123,8 @@ export const BUTTONLIST_BUTTONS = [
 export const YOUTUBE_API =
   "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=IN&key=" +
   process.env.REACT_APP_YOUTUBE_API_KEY;
+
+export const CHANNEL_API =
+  "https://youtube.googleapis.com/youtube/v3/channels?part=snippet&key=" +
+  process.env.REACT_APP_YOUTUBE_API_KEY +
+  "&id=";
