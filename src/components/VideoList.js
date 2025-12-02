@@ -22,7 +22,7 @@ const VideoList = () => {
   return (
     <div className="m-4 grid  gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {videoInfo.map((info) => (
-        <Link to={"/watch"} key={info.id}>
+        <Link to={"/watch?v=" + info.id} key={info.id}>
           <VideoCard info={info} />
         </Link>
       ))}
