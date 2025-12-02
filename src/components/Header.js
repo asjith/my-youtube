@@ -22,7 +22,9 @@ const Header = () => {
           alt="menu"
           src={menuURL}
         />
-        <img className="w-7" alt="logo" src={logoURL} />
+        <a href="/">
+          <img className="w-7" alt="logo" src={logoURL} />
+        </a>
       </div>
       <div className="flex col-span-10 justify-self-center">
         <input
