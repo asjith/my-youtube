@@ -2,12 +2,24 @@ import menuURL from "../icons/menu.svg";
 import logoURL from "../icons/logo.svg";
 import searchURL from "../icons/search.svg";
 import profileURL from "../icons/profile.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleSideBar } from "../utils/appSlice";
+import { YOUTUBE_SEARCH_SUGGESTIONS_API } from "../utils/constants";
 
 const Header = () => {
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchSearchSuggestions();
+  }, [search]);
+
+  const fetchSearchSuggestions = async () => {
+    const data = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + search);
+    const json = await data.json();
+    console.log(json[1]);
+  };
 
   const handleMenuClick = () => {
     dispatch(toggleSideBar());
@@ -31,6 +43,8 @@ const Header = () => {
           className="border border-gray-400 w-52 px-3 rounded-l-full text-xs md:w-96"
           type="text"
           placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         ></input>
         <button>
           <img

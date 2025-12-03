@@ -9,7 +9,7 @@ const SideBar = () => {
   if (!isSideBarOpen) return null;
 
   return (
-    <div className="fixed col-span-3 flex flex-col p-4">
+    <div className="fixed col-span-3 flex flex-col p-4 bg-white h-full">
       {SIDEBAR_BUTTONS.map((buttonInfo) => {
         return (
           <React.Fragment key={buttonInfo.id}>
