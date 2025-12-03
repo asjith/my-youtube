@@ -12,7 +12,14 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchSearchSuggestions();
+    //debounce
+    const timer = setTimeout(() => {
+      fetchSearchSuggestions();
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [search]);
 
   const fetchSearchSuggestions = async () => {
