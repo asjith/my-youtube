@@ -43,7 +43,7 @@ const ButtonList = () => {
   };
 
   return (
-    <div className="grid grid-flow-col items-center m-4 relative">
+    <div className="sticky bg-white top-[3.7rem] grid grid-flow-col items-center p-4">
       {showBtn.left && (
         <div className="col-span-2 absolute left-0 z-10 bg-white rounded-r-full">
           <button

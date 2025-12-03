@@ -58,7 +58,7 @@ const VideoCard = ({ info }) => {
   const duration = getDuration(publishedAt);
 
   return (
-    <div className="p-1 cursor-pointer shadow-md rounded-md">
+    <div className="p-1 cursor-pointer shadow-md rounded-md hover:bg-red-100">
       <img
         className="rounded-md w-full"
         src={thumbnails.medium.url}
