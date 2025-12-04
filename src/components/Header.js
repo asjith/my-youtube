@@ -3,9 +3,10 @@ import logoURL from "../icons/logo.svg";
 import searchURL from "../icons/search.svg";
 import profileURL from "../icons/profile.png";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleSideBar } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_SUGGESTIONS_API } from "../utils/constants";
+import { cacheResults } from "../utils/searchSlice";
 
 const Header = () => {
   const [search, setSearch] = useState("");
@@ -13,6 +14,7 @@ const Header = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
   const dispatch = useDispatch();
+  const searchCache = useSelector((store) => store.search);
 
   useEffect(() => {
     document.addEventListener("click", handleShowSearchSuggestions);
@@ -28,7 +30,12 @@ const Header = () => {
   useEffect(() => {
     //debounce
     const timer = setTimeout(() => {
-      fetchSearchSuggestions();
+      if (searchCache[search]) {
+        setSuggestions(searchCache[search]);
+        setShowSuggestions(true);
+      } else {
+        fetchSearchSuggestions();
+      }
     }, 300);
 
     return () => {
@@ -41,6 +48,7 @@ const Header = () => {
     const json = await data.json();
     setSuggestions(json[1]);
     if (json[1].length > 0) setShowSuggestions(true);
+    dispatch(cacheResults({ [search]: json[1] }));
   };
 
   const handleMenuClick = () => {
