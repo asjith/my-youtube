@@ -9,6 +9,7 @@ import { YOUTUBE_SEARCH_SUGGESTIONS_API } from "../utils/constants";
 
 const Header = () => {
   const [search, setSearch] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,7 +26,8 @@ const Header = () => {
   const fetchSearchSuggestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + search);
     const json = await data.json();
-    console.log(json[1]);
+    setSuggestions(json[1]);
+    console.log(json);
   };
 
   const handleMenuClick = () => {
@@ -33,7 +35,7 @@ const Header = () => {
   };
 
   return (
-    <div className="sticky top-0 bg-white grid grid-flow-col items-center px-4 py-[1rem]">
+    <div className="sticky top-0 bg-white grid grid-flow-col items-center px-4 py-[1rem] z-20">
       <div className="flex col-span-1 gap-4">
         <img
           className="w-5 cursor-pointer"
@@ -45,21 +47,32 @@ const Header = () => {
           <img className="w-7" alt="logo" src={logoURL} />
         </a>
       </div>
-      <div className="flex col-span-10 justify-self-center">
-        <input
-          className="border border-gray-400 w-52 px-3 rounded-l-full text-xs md:w-96"
-          type="text"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        ></input>
-        <button>
-          <img
-            className="w-9 px-2 py-1 border border-gray-400 bg-gray-200 rounded-r-full"
-            alt="search"
-            src={searchURL}
-          />
-        </button>
+      <div className="mx-auto my-0 col-span-10 relative">
+        <div className="flex justify-center ">
+          <input
+            className="border border-gray-400 w-52 px-3 rounded-l-full text-xs md:w-96"
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          ></input>
+          <button>
+            <img
+              className="w-9 px-2 py-1 border border-gray-400 bg-gray-200 rounded-r-full"
+              alt="search"
+              src={searchURL}
+            />
+          </button>
+        </div>
+        {suggestions.length > 0 && (
+          <div className="absolute bg-white px-3 py-2 text-xs font-bold border border-gray-200 rounded-md shadow-lg w-52 md:w-96">
+            <ul>
+              {suggestions.map((suggestion) => (
+                <li className="my-4">{suggestion}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="col-span-1 justify-self-end">
         <img className="w-7" alt="profile" src={profileURL} />
