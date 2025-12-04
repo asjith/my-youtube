@@ -69,6 +69,11 @@ const Header = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           ></input>
+          {search && (
+            <button className="absolute right-11" onClick={() => setSearch("")}>
+              &#10005;
+            </button>
+          )}
           <button>
             <img
               className="w-9 px-2 py-1 border border-gray-400 bg-gray-200 rounded-r-full"
