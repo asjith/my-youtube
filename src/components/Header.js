@@ -2,7 +2,7 @@ import menuURL from "../icons/menu.svg";
 import logoURL from "../icons/logo.svg";
 import searchURL from "../icons/search.svg";
 import profileURL from "../icons/profile.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleSideBar } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_SUGGESTIONS_API } from "../utils/constants";
@@ -10,7 +10,20 @@ import { YOUTUBE_SEARCH_SUGGESTIONS_API } from "../utils/constants";
 const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchRef = useRef(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    document.addEventListener("click", handleShowSearchSuggestions);
+
+    return () =>
+      document.removeEventListener("click", handleShowSearchSuggestions);
+  }, []);
+
+  const handleShowSearchSuggestions = (e) => {
+    if (!searchRef.current.contains(e.target)) setShowSuggestions(false);
+  };
 
   useEffect(() => {
     //debounce
@@ -27,7 +40,7 @@ const Header = () => {
     const data = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + search);
     const json = await data.json();
     setSuggestions(json[1]);
-    console.log(json);
+    if (json[1].length > 0) setShowSuggestions(true);
   };
 
   const handleMenuClick = () => {
@@ -47,7 +60,7 @@ const Header = () => {
           <img className="w-7" alt="logo" src={logoURL} />
         </a>
       </div>
-      <div className="mx-auto my-0 col-span-10 relative">
+      <div className="mx-auto my-0 col-span-10 relative" ref={searchRef}>
         <div className="flex justify-center ">
           <input
             className="border border-gray-400 w-52 px-3 rounded-l-full text-xs md:w-96"
@@ -64,11 +77,14 @@ const Header = () => {
             />
           </button>
         </div>
-        {suggestions.length > 0 && (
+        {showSuggestions && (
           <div className="absolute bg-white px-2 py-2 text-xs font-bold border border-gray-200 rounded-md shadow-lg w-52 md:w-96">
             <ul>
               {suggestions.map((suggestion) => (
-                <li className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200">
+                <li
+                  key={suggestion}
+                  className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200"
+                >
                   {suggestion}
                 </li>
               ))}
