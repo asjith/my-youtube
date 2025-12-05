@@ -38,7 +38,7 @@ const Header = () => {
         setSuggestions(searchCache[search]);
         setShowSuggestions(true);
       } else {
-        fetchSearchSuggestions();
+        if (search !== "") fetchSearchSuggestions();
       }
     }, 300);
 
@@ -102,7 +102,13 @@ const Header = () => {
                   to={"/results?search_query=" + suggestion}
                   key={suggestion}
                 >
-                  <li className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200">
+                  <li
+                    className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200"
+                    onClick={() => {
+                      setShowSuggestions(false);
+                      setSearch("");
+                    }}
+                  >
                     {suggestion}
                   </li>
                 </Link>
