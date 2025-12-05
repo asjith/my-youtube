@@ -10,12 +10,12 @@ import {
   YOUTUBE_SEARCH_SUGGESTIONS_API,
 } from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedSuggestion, setSelectedSuggestion] = useState("");
   const searchRef = useRef(null);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
@@ -53,16 +53,6 @@ const Header = () => {
     setSuggestions(json[1]);
     if (json[1].length > 0) setShowSuggestions(true);
     dispatch(cacheResults({ [search]: json[1] }));
-  };
-
-  useEffect(() => {
-    if (selectedSuggestion !== "") fetchSearchResults();
-  }, [selectedSuggestion]);
-
-  const fetchSearchResults = async () => {
-    const data = await fetch(YOUTUBE_SEARCH_RESULTS_API + selectedSuggestion);
-    const json = await data.json();
-    console.log(json.items);
   };
 
   const handleMenuClick = () => {
@@ -108,13 +98,14 @@ const Header = () => {
           <div className="absolute bg-white px-2 py-2 text-xs font-bold border border-gray-200 rounded-md shadow-lg w-52 md:w-96">
             <ul>
               {suggestions.map((suggestion) => (
-                <li
+                <Link
+                  to={"/results?search_query=" + suggestion}
                   key={suggestion}
-                  className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200"
-                  onClick={() => setSelectedSuggestion(suggestion)}
                 >
-                  {suggestion}
-                </li>
+                  <li className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200">
+                    {suggestion}
+                  </li>
+                </Link>
               ))}
             </ul>
           </div>

@@ -7,11 +7,12 @@ import MainContainer from "./components/MainContainer";
 import Watch from "./components/Watch";
 import SearchResult from "./components/SearchResult";
 import VideoList from "./components/VideoList";
+import Home from "./components/Home";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <Body />,
+    element: <Home />,
     children: [
       {
         path: "/",
@@ -38,10 +39,7 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <Provider store={store}>
-      <div>
-        <Header />
-        <RouterProvider router={appRouter} />
-      </div>
+      <RouterProvider router={appRouter} />
     </Provider>
   );
 }
