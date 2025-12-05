@@ -5,13 +5,17 @@ import profileURL from "../icons/profile.png";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSideBar } from "../utils/appSlice";
-import { YOUTUBE_SEARCH_SUGGESTIONS_API } from "../utils/constants";
+import {
+  YOUTUBE_SEARCH_RESULTS_API,
+  YOUTUBE_SEARCH_SUGGESTIONS_API,
+} from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
 
 const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedSuggestion, setSelectedSuggestion] = useState("");
   const searchRef = useRef(null);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
@@ -49,6 +53,16 @@ const Header = () => {
     setSuggestions(json[1]);
     if (json[1].length > 0) setShowSuggestions(true);
     dispatch(cacheResults({ [search]: json[1] }));
+  };
+
+  useEffect(() => {
+    if (selectedSuggestion !== "") fetchSearchResults();
+  }, [selectedSuggestion]);
+
+  const fetchSearchResults = async () => {
+    const data = await fetch(YOUTUBE_SEARCH_RESULTS_API + selectedSuggestion);
+    const json = await data.json();
+    console.log(json.items);
   };
 
   const handleMenuClick = () => {
@@ -97,6 +111,7 @@ const Header = () => {
                 <li
                   key={suggestion}
                   className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200"
+                  onClick={() => setSelectedSuggestion(suggestion)}
                 >
                   {suggestion}
                 </li>
