@@ -9,7 +9,7 @@ const SearchResult = () => {
 
   useEffect(() => {
     fetchSearchResults();
-  }, []);
+  }, [searchParams]);
 
   const fetchSearchResults = async () => {
     const data = await fetch(
