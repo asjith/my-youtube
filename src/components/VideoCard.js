@@ -87,7 +87,7 @@ const VideoCard = ({ info, calledFrom }) => {
           <div className="text-xs text-gray-500 py-1">
             <p>{channelTitle}</p>
             <p>
-              {!isNaN(views) && (
+              {!isNaN(parseInt(views)) && (
                 <>
                   <span>{views} views</span> .
                 </>
