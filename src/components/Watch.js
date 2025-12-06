@@ -11,6 +11,7 @@ const Watch = () => {
 
   useEffect(() => {
     dispatch(closeSideBar());
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -20,7 +21,7 @@ const Watch = () => {
         src={
           "https://www.youtube.com/embed/" +
           searchParams.get("v") +
-          "?si=Wei6g8TNvvsJM8ym"
+          "?si=Wei6g8TNvvsJM8ym&autoplay=1"
         }
         title="YouTube video player"
         frameBorder="0"
