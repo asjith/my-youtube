@@ -136,3 +136,26 @@ export const YOUTUBE_SEARCH_RESULTS_API =
   "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&type=video&key=" +
   process.env.REACT_APP_YOUTUBE_API_KEY +
   "&q=";
+
+export const COMMENTS_DATA = [
+  {
+    name: "User 1",
+    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+  },
+  {
+    name: "User 1",
+    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  },
+  {
+    name: "User 1",
+    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  },
+  {
+    name: "User 1",
+    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  },
+  {
+    name: "User 1",
+    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  },
+];

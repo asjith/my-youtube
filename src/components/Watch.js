@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { closeSideBar } from "../utils/appSlice";
 import { useSearchParams } from "react-router-dom";
+import Comment from "./Comment";
+import { COMMENTS_DATA } from "../utils/constants";
 
 const Watch = () => {
   const [searchParams] = useSearchParams();
@@ -14,7 +16,7 @@ const Watch = () => {
   return (
     <div className="col-span-9 m-2 p-2">
       <iframe
-        className="rounded-md w-full aspect-video md:w-4/6"
+        className="rounded-md w-full aspect-video my-2 md:w-4/6"
         src={
           "https://www.youtube.com/embed/" +
           searchParams.get("v") +
@@ -26,6 +28,11 @@ const Watch = () => {
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
       ></iframe>
+      <div className="w-full md:w-4/6">
+        {COMMENTS_DATA.map((comment) => (
+          <Comment info={comment} />
+        ))}
+      </div>
     </div>
   );
 };

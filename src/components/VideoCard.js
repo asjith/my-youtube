@@ -92,7 +92,7 @@ const VideoCard = ({ info, calledFrom }) => {
                   <span>{views} views</span> .
                 </>
               )}
-              <span>{duration}</span>
+              <span> {duration}</span>
             </p>
           </div>
         </div>
