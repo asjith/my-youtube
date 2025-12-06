@@ -7,7 +7,7 @@ const Comment = ({ info }) => {
       <div className="text-xs">
         <p className="font-bold mb-1">{info.name}</p>
         <p>{info.text}</p>
-        <div className="border-l-2 border-black">
+        <div className="border-l-2 border-gray-400">
           {info.replies?.length > 0 &&
             info.replies.map((replyComment) => <Comment info={replyComment} />)}
         </div>
