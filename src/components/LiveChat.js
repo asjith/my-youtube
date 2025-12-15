@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../utils/chatSlice";
 
 const LiveChat = () => {
+  const chatId = useRef(0);
   const dispatch = useDispatch();
   const chatMessage = useSelector((store) => store.chat);
-  let chatId = 0;
 
   useEffect(() => {
     //API polling
@@ -15,8 +15,8 @@ const LiveChat = () => {
 
       dispatch(
         addMessage({
-          id: ++chatId,
-          name: "User" + chatId,
+          id: chatId.current++,
+          name: "User" + chatId.current,
           message: "Wow this is live Chat!!",
         })
       );

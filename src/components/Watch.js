@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import Comment from "./Comment";
 import { COMMENTS_DATA } from "../utils/constants";
 import LiveChat from "./LiveChat";
+import { clearMessages } from "../utils/chatSlice";
 
 const Watch = () => {
   const [searchParams] = useSearchParams();
@@ -13,6 +14,7 @@ const Watch = () => {
   useEffect(() => {
     dispatch(closeSideBar());
     window.scrollTo(0, 0);
+    dispatch(clearMessages());
   }, []);
 
   return (
