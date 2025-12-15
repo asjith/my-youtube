@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import ChatMessage from "./ChatMessage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../utils/chatSlice";
 
 const LiveChat = () => {
   const dispatch = useDispatch();
-  let chatId = 1;
+  const chatMessage = useSelector((store) => store.chat);
+  let chatId = 0;
 
   useEffect(() => {
     //API polling
@@ -14,8 +15,8 @@ const LiveChat = () => {
 
       dispatch(
         addMessage({
-          id: chatId++,
-          name: "User 1",
+          id: ++chatId,
+          name: "User" + chatId,
           message: "Wow this is live Chat!!",
         })
       );
@@ -25,8 +26,10 @@ const LiveChat = () => {
   }, []);
 
   return (
-    <div className="border border-gray-400 rounded-md w-full aspect-video my-2">
-      <ChatMessage name="User 1" message="This is live Chat" />
+    <div className="border border-gray-400 rounded-md w-full aspect-video my-2 flex flex-col-reverse overflow-y-scroll">
+      {chatMessage.map((chat) => (
+        <ChatMessage key={chat.id} name={chat.name} message={chat.message} />
+      ))}
     </div>
   );
 };
