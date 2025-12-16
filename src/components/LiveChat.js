@@ -50,10 +50,28 @@ const LiveChat = () => {
   };
 
   return (
-    <div className="border border-gray-400 rounded-md w-full aspect-video my-2 flex flex-col-reverse overflow-y-scroll">
-      {chatMessage.map((chat) => (
-        <ChatMessage key={chat?.id} name={chat?.name} message={chat?.message} />
-      ))}
+    <div className="border border-gray-400 rounded-md w-full aspect-video my-2 flex flex-col">
+      <div className="p-2 border-b border-gray-400">
+        <h1 className="font-bold">Live Chat:</h1>
+      </div>
+      <div className="flex flex-col-reverse overflow-y-scroll w-full h-full">
+        {chatMessage.map((chat) => (
+          <ChatMessage
+            key={chat?.id}
+            name={chat?.name}
+            message={chat?.message}
+          />
+        ))}
+      </div>
+      <div className="p-2 border-t border-gray-400 text-xs grid grid-cols-12 gap-1">
+        <input
+          className="border border-gray-400 rounded-md px-2 py-1 col-span-11 md:col-span-9"
+          type="text"
+        />
+        <button className="bg-gray-200 rounded-md px-2 py-1 col-span-1 md:col-span-3">
+          Send
+        </button>
+      </div>
     </div>
   );
 };
