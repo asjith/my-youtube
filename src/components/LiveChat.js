@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../utils/chatSlice";
 import openai from "../utils/openai";
 
 const LiveChat = () => {
+  const [liveMessage, setLiveMessage] = useState("");
   const messageQueue = useRef([]);
   const chatId = useRef(0);
   const timeoutRef = useRef(null);
@@ -63,15 +64,33 @@ const LiveChat = () => {
           />
         ))}
       </div>
-      <div className="p-2 border-t border-gray-400 text-xs grid grid-cols-12 gap-1">
+      <form
+        className="p-2 border-t border-gray-400 text-xs grid grid-cols-12 gap-1"
+        onSubmit={(e) => {
+          e.preventDefault();
+          dispatch(
+            addMessage({
+              id: ++chatId.current,
+              name: "User",
+              message: liveMessage,
+            })
+          );
+          setLiveMessage("");
+        }}
+      >
         <input
           className="border border-gray-400 rounded-md px-2 py-1 col-span-11 md:col-span-9"
           type="text"
+          value={liveMessage}
+          onChange={(e) => setLiveMessage(e.target.value)}
         />
-        <button className="bg-gray-200 rounded-md px-2 py-1 col-span-1 md:col-span-3">
+        <button
+          type="submit"
+          className="bg-gray-200 rounded-md px-2 py-1 col-span-1 md:col-span-3"
+        >
           Send
         </button>
-      </div>
+      </form>
     </div>
   );
 };
