@@ -222,3 +222,5 @@ export const COMMENTS_DATA = [
     ],
   },
 ];
+
+export const LIVE_CHAT_COUNT = 20;
