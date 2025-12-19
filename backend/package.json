@@ -4,9 +4,10 @@
   "description": "",
   "license": "ISC",
   "author": "Anusree S Jith",
-  "type": "commonjs",
+  "type": "module",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
