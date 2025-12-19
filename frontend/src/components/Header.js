@@ -48,7 +48,9 @@ const Header = () => {
   }, [search]);
 
   const fetchSearchSuggestions = async () => {
-    const data = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + search);
+    const data = await fetch(
+      "http://localhost:3001/api/suggestions?q=" + search
+    );
     const json = await data.json();
     setSuggestions(json[1]);
     if (json[1].length > 0) setShowSuggestions(true);
