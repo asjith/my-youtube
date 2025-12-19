@@ -9,7 +9,9 @@ const Comment = ({ info }) => {
         <p>{info.text}</p>
         <div className="border-l-2 border-gray-400">
           {info.replies?.length > 0 &&
-            info.replies.map((replyComment) => <Comment info={replyComment} />)}
+            info.replies.map((replyComment) => (
+              <Comment key={replyComment.id} info={replyComment} />
+            ))}
         </div>
       </div>
     </div>

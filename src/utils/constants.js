@@ -139,82 +139,80 @@ export const YOUTUBE_SEARCH_RESULTS_API =
 
 export const COMMENTS_DATA = [
   {
+    id: "1",
     name: "User 1",
     text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     replies: [
       {
+        id: "1.2",
         name: "User 2",
         text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         replies: [
-          {
-            name: "User 3",
-            text: "Lorem Ipsum",
-            replies: [],
-          },
+          { id: "1.2.1", name: "User 3", text: "Lorem Ipsum", replies: [] },
         ],
       },
     ],
   },
   {
+    id: "2",
     name: "User 1",
     text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     replies: [],
   },
   {
+    id: "3",
     name: "User 1",
     text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     replies: [
       {
+        id: "3.1",
         name: "User 2",
         text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         replies: [],
       },
       {
+        id: "3.2",
         name: "User 3",
         text: "🤣🤣🤣🤣🤣",
         replies: [],
       },
       {
+        id: "3.3",
         name: "User 4",
         text: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
         replies: [
-          {
-            name: "User 5",
-            text: "Wowww awsm",
-            replies: [],
-          },
+          { id: "3.3.1", name: "User 5", text: "Wowww awsm", replies: [] },
         ],
       },
     ],
   },
   {
+    id: "4",
     name: "User 1",
     text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     replies: [
       {
+        id: "4.1",
         name: "User 2",
         text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         replies: [
           {
+            id: "4.1.1",
             name: "User 3",
             text: "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            replies: [
-              {
-                name: "User 4",
-                text: "❤️😊",
-                replies: [],
-              },
-            ],
+            replies: [{ id: 4.111, name: "User 4", text: "❤️😊", replies: [] }],
           },
         ],
       },
     ],
   },
   {
+    id: "5",
     name: "User 1",
     text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     replies: [
       {
+        id: "5.1",
         name: "User 2",
         text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         replies: [],

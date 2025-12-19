@@ -13,7 +13,7 @@ const VideoList = () => {
   const fetchYoutubeVideoDatas = async () => {
     const data = await fetch(YOUTUBE_API);
     const json = await data.json();
-    console.log(json);
+
     setVideoInfo(json.items);
   };
 

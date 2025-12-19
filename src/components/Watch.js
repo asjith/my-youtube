@@ -39,7 +39,7 @@ const Watch = () => {
         <h1 className="font-bold">Comments:</h1>
         <div>
           {COMMENTS_DATA.map((comment) => (
-            <Comment info={comment} />
+            <Comment key={comment.id} info={comment} />
           ))}
         </div>
       </div>
