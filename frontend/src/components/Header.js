@@ -10,7 +10,7 @@ import {
   YOUTUBE_SEARCH_SUGGESTIONS_API,
 } from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [search, setSearch] = useState("");
@@ -19,6 +19,7 @@ const Header = () => {
   const searchRef = useRef(null);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.addEventListener("click", handleShowSearchSuggestions);
@@ -61,6 +62,17 @@ const Header = () => {
     dispatch(toggleSideBar());
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!(search == 0)) {
+      navigate("/results?search_query=" + search);
+    }
+
+    setSearch("");
+    setShowSuggestions(false);
+  };
+
   return (
     <div className="sticky top-0 bg-white grid grid-flow-col items-center px-4 py-[1rem] z-20">
       <div className="flex col-span-1 gap-4">
@@ -75,7 +87,7 @@ const Header = () => {
         </a>
       </div>
       <div className="mx-auto my-0 col-span-10 relative" ref={searchRef}>
-        <div className="flex justify-center ">
+        <form className="flex justify-center " onSubmit={handleSubmit}>
           <input
             className="border border-gray-400 w-52 px-3 rounded-l-full text-xs md:w-96"
             type="text"
@@ -84,24 +96,22 @@ const Header = () => {
             onChange={(e) => setSearch(e.target.value)}
           ></input>
           {search && (
-            <button className="absolute right-11" onClick={() => setSearch("")}>
+            <button
+              type="button"
+              className="absolute right-11"
+              onClick={() => setSearch("")}
+            >
               &#10005;
             </button>
           )}
-          <button>
-            <Link to={"/results?search_query=" + suggestions}>
-              <img
-                className="w-9 px-2 py-1 border border-gray-400 bg-gray-200 rounded-r-full"
-                alt="search"
-                src={searchURL}
-                onClick={() => {
-                  setSearch("");
-                  setShowSuggestions(false);
-                }}
-              />
-            </Link>
+          <button type="submit">
+            <img
+              className="w-9 px-2 py-1 border border-gray-400 bg-gray-200 rounded-r-full"
+              alt="search"
+              src={searchURL}
+            />
           </button>
-        </div>
+        </form>
         {showSuggestions && (
           <div className="absolute bg-white px-2 py-2 text-xs font-bold border border-gray-200 rounded-md shadow-lg w-52 md:w-96">
             <ul>
