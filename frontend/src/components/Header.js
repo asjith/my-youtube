@@ -16,6 +16,7 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectSuggestion, setSelectSuggestion] = useState(-1);
   const searchRef = useRef(null);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
@@ -33,6 +34,7 @@ const Header = () => {
   };
 
   useEffect(() => {
+    if (selectSuggestion != -1) return;
     //debounce
     const timer = setTimeout(() => {
       if (searchCache[search]) {
@@ -47,6 +49,11 @@ const Header = () => {
       clearTimeout(timer);
     };
   }, [search]);
+
+  useEffect(() => {
+    if (selectSuggestion == -1) return;
+    setSearch(suggestions[selectSuggestion]);
+  }, [selectSuggestion]);
 
   const fetchSearchSuggestions = async () => {
     const data = await fetch(
@@ -71,6 +78,7 @@ const Header = () => {
 
     setSearch("");
     setShowSuggestions(false);
+    setSelectSuggestion(-1);
   };
 
   return (
@@ -94,12 +102,28 @@ const Header = () => {
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                setSelectSuggestion((s) =>
+                  s < suggestions.length - 1 ? s + 1 : 0
+                );
+              } else if (e.key === "ArrowUp") {
+                setSelectSuggestion((s) =>
+                  s > 0 ? s - 1 : suggestions.length - 1
+                );
+              } else {
+                setSelectSuggestion(-1);
+              }
+            }}
           ></input>
           {search && (
             <button
               type="button"
               className="absolute right-11"
-              onClick={() => setSearch("")}
+              onClick={() => {
+                setSearch("");
+                setSelectSuggestion(-1);
+              }}
             >
               &#10005;
             </button>
@@ -115,16 +139,23 @@ const Header = () => {
         {showSuggestions && (
           <div className="absolute bg-white px-2 py-2 text-xs font-bold border border-gray-200 rounded-md shadow-lg w-52 md:w-96">
             <ul>
-              {suggestions.map((suggestion) => (
+              {suggestions.map((suggestion, index) => (
                 <Link
                   to={"/results?search_query=" + suggestion}
                   key={suggestion}
                 >
                   <li
-                    className="px-1 py-2 cursor-default rounded-md hover:bg-gray-200"
+                    className={
+                      "px-1 py-2 cursor-default rounded-md" +
+                      (selectSuggestion === index && " bg-gray-200")
+                    }
                     onClick={() => {
                       setShowSuggestions(false);
                       setSearch("");
+                      setSelectSuggestion(-1);
+                    }}
+                    onMouseEnter={() => {
+                      setSelectSuggestion(index);
                     }}
                   >
                     {suggestion}
