@@ -16,7 +16,10 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectSuggestion, setSelectSuggestion] = useState(-1);
+  const [selectSuggestion, setSelectSuggestion] = useState({
+    event: null,
+    index: -1,
+  });
   const searchRef = useRef(null);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
@@ -34,7 +37,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (selectSuggestion != -1) return;
+    if (selectSuggestion.index != -1) return;
     //debounce
     const timer = setTimeout(() => {
       if (searchCache[search]) {
@@ -43,7 +46,7 @@ const Header = () => {
       } else {
         if (search !== "") fetchSearchSuggestions();
       }
-    }, 300);
+    }, 200);
 
     return () => {
       clearTimeout(timer);
@@ -51,17 +54,18 @@ const Header = () => {
   }, [search]);
 
   useEffect(() => {
-    if (selectSuggestion == -1) return;
-    setSearch(suggestions[selectSuggestion]);
+    if (selectSuggestion.index == -1) return;
+    if (selectSuggestion.event == "mouseEnter") return;
+    setSearch(suggestions[selectSuggestion.index]);
   }, [selectSuggestion]);
 
   const fetchSearchSuggestions = async () => {
     const data = await fetch(
-      "http://localhost:3001/api/suggestions?q=" + search
+      "http://localhost:5000/api/suggestions?q=" + search
     );
     const json = await data.json();
     setSuggestions(json[1]);
-    if (json[1].length > 0) setShowSuggestions(true);
+    if (json[1]?.length > 0) setShowSuggestions(true);
     dispatch(cacheResults({ [search]: json[1] }));
   };
 
@@ -78,7 +82,7 @@ const Header = () => {
 
     setSearch("");
     setShowSuggestions(false);
-    setSelectSuggestion(-1);
+    setSelectSuggestion({ event: null, index: -1 });
   };
 
   return (
@@ -104,15 +108,23 @@ const Header = () => {
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") {
-                setSelectSuggestion((s) =>
-                  s < suggestions.length - 1 ? s + 1 : 0
-                );
+                setSelectSuggestion({
+                  event: "keyDown",
+                  index:
+                    selectSuggestion.index < suggestions.length - 1
+                      ? selectSuggestion.index + 1
+                      : 0,
+                });
               } else if (e.key === "ArrowUp") {
-                setSelectSuggestion((s) =>
-                  s > 0 ? s - 1 : suggestions.length - 1
-                );
+                setSelectSuggestion({
+                  event: "keyDown",
+                  index:
+                    selectSuggestion.index > 0
+                      ? selectSuggestion.index - 1
+                      : suggestions.length - 1,
+                });
               } else {
-                setSelectSuggestion(-1);
+                setSelectSuggestion({ event: null, index: -1 });
               }
             }}
           ></input>
@@ -122,7 +134,7 @@ const Header = () => {
               className="absolute right-11"
               onClick={() => {
                 setSearch("");
-                setSelectSuggestion(-1);
+                setSelectSuggestion({ event: null, index: -1 });
               }}
             >
               &#10005;
@@ -147,15 +159,18 @@ const Header = () => {
                   <li
                     className={
                       "px-1 py-2 cursor-default rounded-md" +
-                      (selectSuggestion === index && " bg-gray-200")
+                      (selectSuggestion.index === index && " bg-gray-200")
                     }
                     onClick={() => {
                       setShowSuggestions(false);
                       setSearch("");
-                      setSelectSuggestion(-1);
+                      setSelectSuggestion({ event: null, index: -1 });
                     }}
                     onMouseEnter={() => {
-                      setSelectSuggestion(index);
+                      setSelectSuggestion({
+                        event: "mouseEnter",
+                        index: index,
+                      });
                     }}
                   >
                     {suggestion}

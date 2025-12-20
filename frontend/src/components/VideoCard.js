@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CHANNEL_API } from "../utils/constants";
+import profileURL from "../icons/profile.png";
 
 const VideoCard = ({ info, calledFrom }) => {
   const [channelInfo, setChannelInfo] = useState(null);
@@ -78,7 +79,7 @@ const VideoCard = ({ info, calledFrom }) => {
         {channelInfo && (
           <img
             className="rounded-full w-5 h-5 md:w-10 md:h-10"
-            src={channelInfo.thumbnails.default.url}
+            src={channelInfo?.thumbnails?.default?.url ?? profileURL}
             alt="channel-profile-pic"
           />
         )}
