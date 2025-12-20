@@ -65,7 +65,7 @@ const LiveChat = () => {
         ))}
       </div>
       <form
-        className="p-2 border-t border-gray-400 text-xs grid grid-cols-12 gap-1"
+        className="relative p-2 border-t border-gray-400 text-xs grid grid-cols-12 gap-1"
         onSubmit={(e) => {
           e.preventDefault();
           dispatch(
@@ -81,6 +81,7 @@ const LiveChat = () => {
         <input
           className="border border-gray-400 rounded-md px-2 py-1 col-span-9"
           type="text"
+          maxLength="30"
           value={liveMessage}
           onChange={(e) => setLiveMessage(e.target.value)}
         />
@@ -90,6 +91,11 @@ const LiveChat = () => {
         >
           Send
         </button>
+        {liveMessage.length === 30 && (
+          <div className="absolute top-9 left-2 p-2 rounded-md border border-red-600 text-white bg-red-600">
+            Reached maximum limit of text
+          </div>
+        )}
       </form>
     </div>
   );
