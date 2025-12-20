@@ -5,10 +5,7 @@ import profileURL from "../icons/profile.png";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSideBar } from "../utils/appSlice";
-import {
-  YOUTUBE_SEARCH_RESULTS_API,
-  YOUTUBE_SEARCH_SUGGESTIONS_API,
-} from "../utils/constants";
+import { YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND } from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -61,7 +58,7 @@ const Header = () => {
 
   const fetchSearchSuggestions = async () => {
     const data = await fetch(
-      "http://localhost:5000/api/suggestions?q=" + search
+      YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND + search
     );
     const json = await data.json();
     setSuggestions(json[1]);

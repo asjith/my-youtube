@@ -83,8 +83,10 @@ const VideoCard = ({ info, calledFrom }) => {
             alt="channel-profile-pic"
           />
         )}
-        <div>
-          <p className="video-title font-bold text-sm">{title}</p>
+        <div className="overflow-x-hidden">
+          <p className="video-title-small-screen font-bold text-sm md:video-title">
+            {title}
+          </p>
           <div className="text-xs text-gray-500 py-1">
             <p>{channelTitle}</p>
             <p>

@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 *{
+    max-width: 100%;
     box-sizing: border-box;
 }
 
@@ -15,5 +16,12 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.video-title-small-screen {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     overflow: hidden;
 }

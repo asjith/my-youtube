@@ -79,14 +79,14 @@ const LiveChat = () => {
         }}
       >
         <input
-          className="border border-gray-400 rounded-md px-2 py-1 col-span-11 md:col-span-9"
+          className="border border-gray-400 rounded-md px-2 py-1 col-span-9"
           type="text"
           value={liveMessage}
           onChange={(e) => setLiveMessage(e.target.value)}
         />
         <button
           type="submit"
-          className="bg-gray-200 rounded-md px-2 py-1 col-span-1 md:col-span-3"
+          className="bg-gray-200 rounded-md px-2 py-1 col-span-3"
         >
           Send
         </button>
