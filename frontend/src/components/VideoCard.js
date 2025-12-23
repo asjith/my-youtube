@@ -79,8 +79,9 @@ const VideoCard = ({ info, calledFrom }) => {
         {channelInfo && (
           <img
             className="rounded-full w-5 h-5 md:w-10 md:h-10"
-            src={channelInfo?.thumbnails?.default?.url ?? profileURL}
+            src={channelInfo?.thumbnails?.default?.url}
             alt="channel-profile-pic"
+            onError={(e) => (e.target.src = profileURL)}
           />
         )}
         <div className="overflow-x-hidden">
