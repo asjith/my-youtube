@@ -85,12 +85,12 @@ const ChatInput = () => {
             Send
           </button>
           {liveMessage.length >= 70 && liveMessage.length < 100 && (
-            <div className="rounded-md border border-yellow-600 text-white bg-yellow-600 px-2 py-1 my-1 text-center">
+            <div className="rounded-md border border-yellow-600 text-white bg-yellow-600 w-4 h-4  my-1 text-[0.5rem] flex items-center justify-center">
               {100 - liveMessage.length}
             </div>
           )}
           {liveMessage.length === 100 && (
-            <div className="rounded-md border border-red-600 text-white bg-red-600 px-2 py-1 my-1 text-center">
+            <div className="rounded-md border border-red-600 text-white bg-red-600 w-4 h-4 my-1 text-[0.5rem] flex items-center justify-center">
               0
             </div>
           )}
