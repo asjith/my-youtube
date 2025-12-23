@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../utils/chatSlice";
 import openai from "../utils/openai";
+import ChatInput from "./ChatInput";
 
 const LiveChat = () => {
-  const [liveMessage, setLiveMessage] = useState("");
   const messageQueue = useRef([]);
   const chatId = useRef(0);
   const timeoutRef = useRef(null);
@@ -64,39 +64,7 @@ const LiveChat = () => {
           />
         ))}
       </div>
-      <form
-        className="relative p-2 border-t border-gray-400 text-xs grid grid-cols-12 gap-1"
-        onSubmit={(e) => {
-          e.preventDefault();
-          dispatch(
-            addMessage({
-              id: ++chatId.current,
-              name: "User",
-              message: liveMessage,
-            })
-          );
-          setLiveMessage("");
-        }}
-      >
-        <input
-          className="border border-gray-400 rounded-md px-2 py-1 col-span-9"
-          type="text"
-          maxLength="30"
-          value={liveMessage}
-          onChange={(e) => setLiveMessage(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="bg-gray-200 rounded-md px-2 py-1 col-span-3"
-        >
-          Send
-        </button>
-        {liveMessage.length === 30 && (
-          <div className="absolute top-9 left-2 p-2 rounded-md border border-red-600 text-white bg-red-600">
-            Reached maximum limit of text
-          </div>
-        )}
-      </form>
+      <ChatInput />
     </div>
   );
 };
