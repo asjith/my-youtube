@@ -228,3 +228,31 @@ export const LIVE_CHAT_COUNT = 20;
 
 export const LIVE_CHAT_INPUT_LENGTH = 100;
 export const LIVE_CHAT_INPUT_LENGTH_WARNING = 70;
+
+export const DUMMY_LIVE_CHAT_DATA = [
+  {
+    name: "Priya Sharma",
+    message:
+      "Just watched this tutorial on React hooks - super helpful! The examples were clear and easy to follow. Thanks for sharing!",
+  },
+  {
+    name: "Arjun Patel",
+    message:
+      "This cooking video is amazing! Finally learned how to make perfect biryani. Can't wait to try this recipe at home.",
+  },
+  {
+    name: "Meera Krishnan",
+    message:
+      "Great explanation on machine learning algorithms! The visualizations really helped me understand the concepts better.",
+  },
+  {
+    name: "Vikram Singh",
+    message:
+      "Loved this travel vlog! The cinematography is stunning and now Kerala is definitely on my bucket list. Keep up the great work!",
+  },
+  {
+    name: "Anjali Desai",
+    message:
+      "This fitness routine is exactly what I needed. Simple exercises that can be done at home. Subscribed!",
+  },
+];
