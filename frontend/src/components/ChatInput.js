@@ -1,6 +1,10 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addMessage } from "../utils/chatSlice";
+import {
+  LIVE_CHAT_INPUT_LENGTH,
+  LIVE_CHAT_INPUT_LENGTH_WARNING,
+} from "../utils/constants";
 
 const ChatInput = () => {
   const [liveMessage, setLiveMessage] = useState("");
@@ -22,8 +26,8 @@ const ChatInput = () => {
   };
 
   const handleInput = (e) => {
-    if (e.target.innerText.length > 100) {
-      const allowedText = e.target.innerText.slice(0, 100);
+    if (e.target.innerText.length > LIVE_CHAT_INPUT_LENGTH) {
+      const allowedText = e.target.innerText.slice(0, LIVE_CHAT_INPUT_LENGTH);
       divContentRef.current.innerText = allowedText;
 
       //reset cursor position
@@ -47,7 +51,7 @@ const ChatInput = () => {
       handleSubmit();
       return;
     }
-    if (divContentRef.current.innerText.length + 1 > 100) {
+    if (divContentRef.current.innerText.length + 1 > LIVE_CHAT_INPUT_LENGTH) {
       const allowKeys = [
         "Backspace",
         "Delete",
@@ -84,12 +88,13 @@ const ChatInput = () => {
           >
             Send
           </button>
-          {liveMessage.length >= 70 && liveMessage.length < 100 && (
-            <div className="rounded-md border border-yellow-600 text-white bg-yellow-600 w-4 h-4  my-1 text-[0.5rem] flex items-center justify-center">
-              {100 - liveMessage.length}
-            </div>
-          )}
-          {liveMessage.length === 100 && (
+          {liveMessage.length >= LIVE_CHAT_INPUT_LENGTH_WARNING &&
+            liveMessage.length < LIVE_CHAT_INPUT_LENGTH && (
+              <div className="rounded-md border border-yellow-600 text-white bg-yellow-600 w-4 h-4  my-1 text-[0.5rem] flex items-center justify-center">
+                {LIVE_CHAT_INPUT_LENGTH - liveMessage.length}
+              </div>
+            )}
+          {liveMessage.length === LIVE_CHAT_INPUT_LENGTH && (
             <div className="rounded-md border border-red-600 text-white bg-red-600 w-4 h-4 my-1 text-[0.5rem] flex items-center justify-center">
               0
             </div>

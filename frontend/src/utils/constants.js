@@ -225,3 +225,6 @@ export const COMMENTS_DATA = [
 ];
 
 export const LIVE_CHAT_COUNT = 20;
+
+export const LIVE_CHAT_INPUT_LENGTH = 100;
+export const LIVE_CHAT_INPUT_LENGTH_WARNING = 70;
