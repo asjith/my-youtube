@@ -256,3 +256,5 @@ export const DUMMY_LIVE_CHAT_DATA = [
       "This fitness routine is exactly what I needed. Simple exercises that can be done at home. Subscribed!",
   },
 ];
+
+export const TOASTER_DISPLAY_TIME = 10000;
