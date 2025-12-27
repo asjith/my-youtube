@@ -6,14 +6,17 @@ import openai from "../utils/openai";
 import ChatInput from "./ChatInput";
 import { DUMMY_LIVE_CHAT_DATA } from "../utils/constants";
 
-const LiveChat = () => {
+const LiveChat = ({ checkFetch }) => {
   const messageFromOpenai = useRef([]);
   const chatId = useRef(0);
   const isUnmounted = useRef(false);
   const dispatch = useDispatch();
   const chatMessage = useSelector((store) => store.chat);
+  const isOnline = useSelector((store) => store.app.isOnline);
 
   useEffect(() => {
+    if (!isOnline) return;
+    isUnmounted.current = false;
     fetchLiveMessages();
 
     const i = setInterval(() => {
@@ -38,24 +41,31 @@ const LiveChat = () => {
       isUnmounted.current = true;
       clearInterval(i);
     };
-  }, []);
+  }, [isOnline]);
 
   const fetchLiveMessages = async () => {
-    if (isUnmounted.current) return;
+    if (isUnmounted.current || messageFromOpenai.current.length) return;
 
-    const response = await openai.responses.create({
-      model: "gpt-5-nano",
-      input:
-        "I am trying to build a live chat section in my front-end YouTube project. I want you to generate an array of 10 objects where each object contains a key named name(with quotes) with value as a name of the user, some random name can be used and the object should also contain a message key(with quotes) with value as a message which might contain maximum words of 10 or less than 10. The message can be about how awesome the video is, greetings, with or without emojis. Send the object alone, no other writings. Return a valid JSON",
-    });
+    try {
+      const response = await openai.responses.create({
+        model: "gpt-5-nano",
+        input:
+          "I am trying to build a live chat section in my front-end YouTube project. I want you to generate an array of 10 objects where each object contains a key named name(with quotes) with value as a name of the user, some random name can be used and the object should also contain a message key(with quotes) with value as a message which might contain maximum words of 10 or less than 10. The message can be about how awesome the video is, greetings, with or without emojis. Send the object alone, no other writings. Return a valid JSON",
+      });
 
-    if (isUnmounted.current) return;
+      if (isUnmounted.current) return;
 
-    messageFromOpenai.current.push(...JSON.parse(response.output_text));
+      messageFromOpenai.current.push(...JSON.parse(response.output_text));
+    } catch (error) {
+      //network error
+      if (!navigator.onLine || error.message.includes("fetch")) {
+        checkFetch();
+      }
+    }
   };
 
   return (
-    <div className="border border-gray-400 rounded-md w-full aspect-video my-2 flex flex-col">
+    <div className="border border-gray-400 rounded-md w-full aspect-video my-2 flex flex-col md:w-2/6 ">
       <div className="p-2 border-b border-gray-400">
         <h1 className="font-bold">Live Chat:</h1>
       </div>
