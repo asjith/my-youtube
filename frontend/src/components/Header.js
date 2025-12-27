@@ -20,6 +20,7 @@ const Header = () => {
   const searchRef = useRef(null);
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
+  const isOnline = useSelector((store) => store.app.isOnline);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const Header = () => {
   };
 
   useEffect(() => {
+    if (!isOnline) return;
     if (selectSuggestion.index != -1) return;
     //debounce
     const timer = setTimeout(() => {
@@ -48,7 +50,7 @@ const Header = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [search]);
+  }, [search, isOnline]);
 
   useEffect(() => {
     if (selectSuggestion.index == -1) return;
@@ -57,13 +59,19 @@ const Header = () => {
   }, [selectSuggestion]);
 
   const fetchSearchSuggestions = async () => {
-    const data = await fetch(
-      YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND + search
-    );
-    const json = await data.json();
-    setSuggestions(json[1]);
-    if (json[1]?.length > 0) setShowSuggestions(true);
-    dispatch(cacheResults({ [search]: json[1] }));
+    try {
+      const data = await fetch(
+        YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND + search
+      );
+      const json = await data.json();
+      setSuggestions(json[1]);
+      if (json[1]?.length > 0) setShowSuggestions(true);
+      dispatch(cacheResults({ [search]: json[1] }));
+    } catch (error) {
+      //network error
+      if (!navigator.onLine || error.message.includes("fetch"))
+        console.debug("Failed fetch: ", error.message);
+    }
   };
 
   const handleMenuClick = () => {
