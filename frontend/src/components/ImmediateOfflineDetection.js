@@ -47,7 +47,7 @@ const ImmediateOfflineDetection = () => {
       {showToaster && !isOnline && (
         <div
           className={
-            "toaster mx-4 p-2 bg-black text-white absolute top-4 right-0 z-50 text-xs rounded-md flex gap-1 items-center  " +
+            "toaster mx-4 p-2 bg-black text-white fixed top-4 right-0 z-50 text-xs rounded-md flex gap-1 items-center  " +
             (exitAnimation && "  exit")
           }
         >
@@ -60,7 +60,7 @@ const ImmediateOfflineDetection = () => {
       {showToaster && isOnline && (
         <div
           className={
-            "toaster mx-4 px-4 py-2 bg-green-600 text-white absolute top-4 right-0 z-50 text-xs rounded-md flex gap-1 items-center  " +
+            "toaster mx-4 px-4 py-2 bg-green-600 text-white fixed top-4 right-0 z-50 text-xs rounded-md flex gap-1 items-center  " +
             (exitAnimation && "  exit")
           }
         >
