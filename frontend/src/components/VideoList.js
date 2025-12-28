@@ -5,12 +5,15 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Offline from "./Offline";
 import Loading from "./Loading";
+import Error from "./Error";
+import { checkOfflineError } from "../utils/helperFunctions";
 
 const VideoList = () => {
   const [videoInfo, setVideoInfo] = useState([]);
   const [displayOffline, setDisplayOffline] = useState(false);
   const [loading, setLoading] = useState(false);
   const [retry, setRetry] = useState(false);
+  const [error, setError] = useState(false);
   const isOnline = useSelector((store) => store.app.isOnline);
 
   useEffect(() => {
@@ -21,14 +24,33 @@ const VideoList = () => {
   const fetchYoutubeVideoDatas = async () => {
     try {
       setLoading(true);
-      const data = await fetch(YOUTUBE_API);
-      const json = await data.json();
-
-      setVideoInfo(json.items);
+      setError(false);
       setDisplayOffline(false);
+      const data = await fetch(YOUTUBE_API);
+
+      if (!data.ok) {
+        console.error("HTTP Error:", {
+          status: data.status,
+          statusText: data.statusText,
+          url: data.url,
+          timestamp: new Date().toISOString(),
+        });
+        setError(true);
+        setVideoInfo([]);
+      } else {
+        const json = await data.json();
+
+        setVideoInfo(json.items);
+      }
     } catch (error) {
       //network issue
-      if (error.name === "TypeError") setDisplayOffline(true);
+      if (!navigator.onLine || checkOfflineError(error.message))
+        setDisplayOffline(true);
+      else {
+        console.error("Network Error ", error);
+        setError(true);
+        setVideoInfo([]);
+      }
     }
     setLoading(false);
     setRetry(false);
@@ -41,6 +63,8 @@ const VideoList = () => {
   if (loading) return <Loading />;
 
   if (displayOffline) return <Offline onClick={handleRetry} />;
+
+  if (error) return <Error onClick={handleRetry} />;
 
   if (videoInfo.length === 0) return null;
 

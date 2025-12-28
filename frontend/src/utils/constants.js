@@ -258,3 +258,13 @@ export const DUMMY_LIVE_CHAT_DATA = [
 ];
 
 export const TOASTER_DISPLAY_TIME = 10000;
+
+export const USER_OFFLINE_ERROR_KEYWORDS = [
+  "Failed to fetch",
+  "NetworkError",
+  "Network request failed",
+  "Load failed",
+  "ERR_INTERNET_DISCONNECTED",
+  "ERR_NETWORK_CHANGED",
+  "No internet connection",
+];

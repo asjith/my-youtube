@@ -13,9 +13,22 @@ const VideoCard = ({ info, calledFrom }) => {
   }, []);
 
   const fetchYoutubeChannelData = async () => {
-    const data = await fetch(CHANNEL_API + snippet.channelId);
-    const json = await data.json();
-    setChannelInfo(json.items[0].snippet);
+    try {
+      const data = await fetch(CHANNEL_API + snippet.channelId);
+      if (!data.ok) {
+        console.error("HTTP Error", {
+          status: data.status,
+          statusText: data.statusText,
+          url: data.url,
+          timestamp: new Date().toISOString(),
+        });
+      } else {
+        const json = await data.json();
+        setChannelInfo(json.items[0].snippet);
+      }
+    } catch (error) {
+      console.error("Network Error", error);
+    }
   };
 
   const views =

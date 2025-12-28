@@ -8,6 +8,7 @@ import { toggleSideBar } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND } from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { checkOfflineError } from "../utils/helperFunctions";
 
 const Header = () => {
   const [search, setSearch] = useState("");
@@ -63,14 +64,21 @@ const Header = () => {
       const data = await fetch(
         YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND + search
       );
-      const json = await data.json();
-      setSuggestions(json[1]);
-      if (json[1]?.length > 0) setShowSuggestions(true);
-      dispatch(cacheResults({ [search]: json[1] }));
+      if (!data.ok) {
+        console.log("HTTP Error", {
+          status: data.status,
+          statusText: data.statusText,
+          url: data.url,
+          timestamp: new Date().toISOString(),
+        });
+      } else {
+        const json = await data.json();
+        setSuggestions(json[1]);
+        if (json[1]?.length > 0) setShowSuggestions(true);
+        dispatch(cacheResults({ [search]: json[1] }));
+      }
     } catch (error) {
-      //network error
-      if (!navigator.onLine || error.message.includes("fetch"))
-        console.debug("Failed fetch: ", error.message);
+      console.error("Network Error", error);
     }
   };
 

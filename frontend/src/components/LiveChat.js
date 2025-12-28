@@ -5,6 +5,7 @@ import { addMessage } from "../utils/chatSlice";
 import openai from "../utils/openai";
 import ChatInput from "./ChatInput";
 import { DUMMY_LIVE_CHAT_DATA } from "../utils/constants";
+import { checkOfflineError } from "../utils/helperFunctions";
 
 const LiveChat = ({ checkFetch }) => {
   const messageFromOpenai = useRef([]);
@@ -58,8 +59,10 @@ const LiveChat = ({ checkFetch }) => {
       messageFromOpenai.current.push(...JSON.parse(response.output_text));
     } catch (error) {
       //network error
-      if (!navigator.onLine || error.message.includes("fetch")) {
+      if (!navigator.onLine || checkOfflineError(error.message)) {
         checkFetch();
+      } else {
+        console.error(error);
       }
     }
   };

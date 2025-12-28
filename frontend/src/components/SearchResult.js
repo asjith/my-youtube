@@ -6,6 +6,8 @@ import Offline from "./Offline";
 import { useSelector } from "react-redux";
 import Loading from "./Loading";
 import NoResultsFound from "./NoResultsFound";
+import { checkOfflineError } from "../utils/helperFunctions";
+import Error from "./Error";
 
 const SearchResult = () => {
   const [searchResults, setSearchResults] = useState({
@@ -15,6 +17,7 @@ const SearchResult = () => {
   const [displayOffline, setDisplayOffline] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [searchParams] = useSearchParams();
   const isOnline = useSelector((store) => store.app.isOnline);
 
@@ -29,17 +32,34 @@ const SearchResult = () => {
 
   const fetchSearchResults = async () => {
     setLoading(true);
+    setError(false);
+    setDisplayOffline(false);
     try {
       const data = await fetch(
         YOUTUBE_SEARCH_RESULTS_API + searchParams.get("search_query")
       );
-      const json = await data.json();
-      setSearchResults({ search: searchParams, result: json.items });
-      setDisplayOffline(false);
+      if (!data.ok) {
+        console.error("HTTP Error", {
+          status: data.status,
+          statusText: data.statusText,
+          url: data.url,
+          timestamp: new Date().toISOString(),
+        });
+        setError(true);
+        setSearchResults({ search: "", result: [] });
+      } else {
+        const json = await data.json();
+        setSearchResults({ search: searchParams, result: json.items });
+      }
     } catch (error) {
       //network error
-      if (!navigator.onLine || error.message.includes("fetch"))
+      if (!navigator.onLine || checkOfflineError(error.message))
         setDisplayOffline(true);
+      else {
+        console.error("Network Error", error);
+        setError(true);
+        setSearchResults({ search: "", result: [] });
+      }
     }
     setLoading(false);
   };
@@ -48,9 +68,11 @@ const SearchResult = () => {
     setRetryCount((rc) => rc + 1);
   };
 
+  if (loading) return <Loading />;
+
   if (displayOffline) return <Offline onClick={handleRetry} />;
 
-  if (loading) return <Loading />;
+  if (error) return <Error onClick={handleRetry} />;
 
   if (searchResults.result.length === 0) return <NoResultsFound />;
 
