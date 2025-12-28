@@ -5,6 +5,7 @@ import VideoCard from "./VideoCard";
 import Offline from "./Offline";
 import { useSelector } from "react-redux";
 import Loading from "./Loading";
+import NoResultsFound from "./NoResultsFound";
 
 const SearchResult = () => {
   const [searchResults, setSearchResults] = useState({
@@ -50,6 +51,8 @@ const SearchResult = () => {
   if (displayOffline) return <Offline onClick={handleRetry} />;
 
   if (loading) return <Loading />;
+
+  if (searchResults.result.length === 0) return <NoResultsFound />;
 
   return (
     <div className="m-4 grid  gap-2 grid-cols-1">
