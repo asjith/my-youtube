@@ -1,5 +1,5 @@
 import menuURL from "../icons/menu.svg";
-import logoURL from "../icons/logo.svg";
+import logoURL from "../icons/logo.png";
 import searchURL from "../icons/search.svg";
 import profileURL from "../icons/profile.png";
 import { useEffect, useRef, useState } from "react";
