@@ -8,6 +8,7 @@ import Watch from "./components/Watch";
 import SearchResult from "./components/SearchResult";
 import VideoList from "./components/VideoList";
 import Home from "./components/Home";
+import ComingSoon from "./components/ComingSoon";
 
 const appRouter = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const appRouter = createBrowserRouter([
           {
             path: "results",
             element: <SearchResult />,
+          },
+          {
+            path: "comingSoon",
+            element: <ComingSoon />,
           },
         ],
       },

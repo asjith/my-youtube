@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { TOASTER_DISPLAY_TIME } from "../utils/constants";
+import Toaster from "./Toaster";
 
 const ImmediateOfflineDetection = () => {
   const [showToaster, setShowToaster] = useState(false);
@@ -45,30 +46,20 @@ const ImmediateOfflineDetection = () => {
   return (
     <>
       {showToaster && !isOnline && (
-        <div
-          className={
-            "toaster mx-4 p-2 bg-black text-white fixed top-4 right-0 z-50 text-xs rounded-md flex gap-1 items-center  " +
-            (exitAnimation && "  exit")
-          }
-        >
-          <p className="p-2">No Internet connection</p>
-          <button className="p-2" onClick={handleClick}>
-            x
-          </button>
-        </div>
+        <Toaster
+          exit={exitAnimation}
+          message="No Internet connection"
+          handleClick={handleClick}
+          colorStyle="bg-black"
+        />
       )}
       {showToaster && isOnline && (
-        <div
-          className={
-            "toaster mx-4 px-4 py-2 bg-green-600 text-white fixed top-4 right-0 z-50 text-xs rounded-md flex gap-1 items-center  " +
-            (exitAnimation && "  exit")
-          }
-        >
-          <p className="p-2">Back Online</p>
-          <button className="p-2" onClick={handleClick}>
-            x
-          </button>
-        </div>
+        <Toaster
+          exit={exitAnimation}
+          message="Back Online"
+          handleClick={handleClick}
+          colorStyle="bg-green-600"
+        />
       )}
     </>
   );

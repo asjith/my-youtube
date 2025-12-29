@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { SIDEBAR_BUTTONS } from "../utils/constants";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useRef, useState } from "react";
 
 const SideBar = () => {
   const isSideBarOpen = useSelector((store) => store.app.isSideBarOpen);
@@ -20,9 +20,11 @@ const SideBar = () => {
                 </button>
               </Link>
             ) : (
-              <button className="text-left px-4 py-2 text-xs rounded-md">
-                {buttonInfo.name}
-              </button>
+              <Link to="/comingSoon">
+                <button className="w-full text-left px-4 py-2 text-xs rounded-md hover:bg-gray-200">
+                  {buttonInfo.name}
+                </button>
+              </Link>
             )}
           </React.Fragment>
         );
