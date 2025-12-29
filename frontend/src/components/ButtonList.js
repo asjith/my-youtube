@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BUTTONLIST_BUTTONS } from "../utils/constants";
+import { Link } from "react-router-dom";
 
 const ButtonList = () => {
   const [showBtn, setShowBtn] = useState({ left: false, right: true });
@@ -62,12 +63,14 @@ const ButtonList = () => {
         >
           {BUTTONLIST_BUTTONS.map((buttonInfo) => {
             return (
-              <button
+              <Link
+                to={"/results?search_query=" + buttonInfo.name}
                 key={buttonInfo.id}
-                className="text-xs px-2 py-1 bg-gray-200 rounded-md font-bold"
               >
-                {buttonInfo.name}
-              </button>
+                <button className="text-xs px-2 py-1 bg-gray-200 rounded-md font-bold whitespace-nowrap hover:bg-black hover:text-white">
+                  {buttonInfo.name}
+                </button>
+              </Link>
             );
           })}
         </div>

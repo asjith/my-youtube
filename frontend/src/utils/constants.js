@@ -118,6 +118,82 @@ export const BUTTONLIST_BUTTONS = [
     id: 21,
     name: "Gadgets",
   },
+  {
+    id: 22,
+    name: "Gaming",
+  },
+  {
+    id: 23,
+    name: "Fashion",
+  },
+  {
+    id: 24,
+    name: "Entertainment",
+  },
+  {
+    id: 25,
+    name: "Comedy",
+  },
+  {
+    id: 26,
+    name: "Movies",
+  },
+  {
+    id: 27,
+    name: "Recently Uploaded",
+  },
+  {
+    id: 28,
+    name: "Science",
+  },
+  {
+    id: 29,
+    name: "Documentary",
+  },
+  {
+    id: 30,
+    name: "Education",
+  },
+  {
+    id: 31,
+    name: "DIY",
+  },
+  {
+    id: 32,
+    name: "Fitness",
+  },
+  {
+    id: 33,
+    name: "Automotive",
+  },
+  {
+    id: 34,
+    name: "Pets",
+  },
+  {
+    id: 35,
+    name: "Vlogs",
+  },
+  {
+    id: 36,
+    name: "Reaction videos",
+  },
+  {
+    id: 37,
+    name: "Unboxing",
+  },
+  {
+    id: 38,
+    name: "Product reviews",
+  },
+  {
+    id: 39,
+    name: "Challenges",
+  },
+  {
+    id: 40,
+    name: "Trailers",
+  },
 ];
 
 export const YOUTUBE_API =
