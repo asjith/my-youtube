@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { YOUTUBE_SEARCH_RESULTS_API } from "../utils/constants";
 import VideoCard from "./VideoCard";
@@ -18,6 +18,7 @@ const SearchResult = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const throttleFlag = useRef(true);
   const [searchParams] = useSearchParams();
   const isOnline = useSelector((store) => store.app.isOnline);
 
@@ -65,7 +66,14 @@ const SearchResult = () => {
   };
 
   const handleRetry = () => {
-    setRetryCount((rc) => rc + 1);
+    //throttling
+    if (throttleFlag.current) {
+      setRetryCount((rc) => rc + 1);
+      throttleFlag.current = false;
+      setTimeout(() => {
+        throttleFlag.current = true;
+      }, 3000);
+    }
   };
 
   if (loading) return <Loading />;

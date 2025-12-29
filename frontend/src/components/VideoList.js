@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { YOUTUBE_API } from "../utils/constants";
 import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ const VideoList = () => {
   const [loading, setLoading] = useState(false);
   const [retry, setRetry] = useState(false);
   const [error, setError] = useState(false);
+  const throttleFlag = useRef(true);
   const isOnline = useSelector((store) => store.app.isOnline);
 
   useEffect(() => {
@@ -57,7 +58,13 @@ const VideoList = () => {
   };
 
   const handleRetry = () => {
-    setRetry(true);
+    if (throttleFlag.current) {
+      setRetry(true);
+      throttleFlag.current = false;
+      setTimeout(() => {
+        throttleFlag.current = true;
+      }, 3000);
+    }
   };
 
   if (loading) return <Loading />;

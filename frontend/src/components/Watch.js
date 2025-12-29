@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSideBar } from "../utils/appSlice";
 import { useSearchParams } from "react-router-dom";
@@ -11,6 +11,7 @@ import loadingURL from "../icons/loading.gif";
 
 const Watch = () => {
   const [dispatchOffline, setDisplayOffline] = useState(false);
+  const throttleFlag = useRef(true);
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
   const isOnline = useSelector((store) => store.app.isOnline);
@@ -26,7 +27,13 @@ const Watch = () => {
   }, [isOnline]);
 
   const handleRetry = () => {
-    if (isOnline) setDisplayOffline(false);
+    if (throttleFlag.current) {
+      if (isOnline) setDisplayOffline(false);
+      throttleFlag.current = false;
+      setTimeout(() => {
+        throttleFlag.current = true;
+      }, 3000);
+    }
   };
 
   const handleOffline = () => {
