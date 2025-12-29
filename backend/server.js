@@ -27,7 +27,9 @@ app.get("/api/suggestions", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3001;
-app.listen(port, () => {
-  console.log(`Server at ${port}`);
-});
+// const port = process.env.PORT || 3001;
+// app.listen(port, () => {
+//   console.log(`Server at ${port}`);
+// });
+
+export default app;
