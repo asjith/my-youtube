@@ -133,7 +133,7 @@ export const YOUTUBE_SEARCH_SUGGESTIONS_API =
   "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
 
 export const YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND =
-  "https://my-youtube-backend-api.onrender.com/api/suggestions?q=";
+  "https://my-youtube-nine-kohl.vercel.app/api/suggestions?q=";
 
 export const YOUTUBE_SEARCH_RESULTS_API =
   "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&type=video&key=" +
