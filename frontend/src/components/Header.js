@@ -65,7 +65,7 @@ const Header = () => {
         YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND + search
       );
       if (!data.ok) {
-        console.log("HTTP Error", {
+        console.error("HTTP Error", {
           status: data.status,
           statusText: data.statusText,
           url: data.url,
