@@ -7,10 +7,7 @@
     box-sizing: border-box;
 }
 
-.slidder{
-    --move:0;
-    transform: translateX(calc(var(--move)* -50%));
-}
+
 
 .video-title{
     display: -webkit-box;
@@ -50,4 +47,13 @@
         transform: translateX(400px);
         opacity: 0;
     }
+}
+
+.button-list-container::-webkit-scrollbar{
+    display:none;   /* Hide scrollbar for Chrome, Safari and Opera */
+}
+
+.button-list-container{
+    scrollbar-width: none;  /* For Firefox */
+    -ms-overflow-style: none;   /* For Internet Explorer and Edge */
 }

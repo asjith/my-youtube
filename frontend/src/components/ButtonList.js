@@ -4,42 +4,42 @@ import { Link } from "react-router-dom";
 
 const ButtonList = () => {
   const [showBtn, setShowBtn] = useState({ left: false, right: true });
-  const [move, setMove] = useState(0);
 
-  const slidderRef = useRef();
-
-  useEffect(() => {
-    const resetButtonList = () => {
-      setMove(0);
-      setShowBtn({ left: false, right: true });
-    };
-
-    window.addEventListener("resize", resetButtonList);
-
-    return () => window.removeEventListener("resize", resetButtonList);
-  }, []);
+  const containerRef = useRef();
 
   const handleRightArrowClick = () => {
-    if (slidderRef.current) {
-      const { scrollWidth, clientWidth } = slidderRef.current;
+    if (containerRef.current) {
+      const { scrollWidth, clientWidth } = containerRef.current;
 
-      const maxMove = (scrollWidth - clientWidth) / (clientWidth * 0.5);
-      const nextMove = Math.min(move + 1, maxMove);
-      setMove(nextMove);
+      containerRef.current.scrollLeft += Math.floor(clientWidth * 0.5);
 
-      if (nextMove === maxMove) setShowBtn({ left: true, right: false });
-      else setShowBtn({ left: true, right: true });
+      if (
+        Math.ceil(containerRef.current.scrollLeft + clientWidth) >= scrollWidth
+      ) {
+        setShowBtn({ left: true, right: false });
+      } else if (containerRef.current.scrollLeft > 0)
+        setShowBtn({ left: true, right: true });
     }
   };
 
   const handleLeftArrowClick = () => {
-    if (slidderRef.current) {
-      const { scrollWidth, clientWidth } = slidderRef.current;
-      const nextMove = Math.max(move - 1, 0);
+    if (containerRef.current) {
+      const { scrollWidth, clientWidth } = containerRef.current;
+      containerRef.current.scrollLeft -= clientWidth * 0.5;
 
-      setMove(nextMove);
+      if (containerRef.current.scrollLeft <= 0)
+        setShowBtn({ left: false, right: true });
+    }
+  };
 
-      if (nextMove <= 0) setShowBtn({ left: false, right: true });
+  const handleScroll = (e) => {
+    if (containerRef.current) {
+      const { scrollWidth, clientWidth } = containerRef.current;
+
+      if (e.target.scrollLeft === 0) setShowBtn({ left: false, right: true });
+      else if (Math.ceil(e.target.scrollLeft + clientWidth) >= scrollWidth)
+        setShowBtn({ left: true, right: false });
+      else setShowBtn({ left: true, right: true });
     }
   };
 
@@ -55,12 +55,12 @@ const ButtonList = () => {
           </button>
         </div>
       )}
-      <div className="col-span-8 overflow-hidden">
-        <div
-          className="slidder flex flex-nowrap gap-2"
-          style={{ "--move": move }}
-          ref={slidderRef}
-        >
+      <div
+        className="button-list-container col-span-8 overflow-x-scroll"
+        onScroll={handleScroll}
+        ref={containerRef}
+      >
+        <div className="slidder flex flex-nowrap gap-2">
           {BUTTONLIST_BUTTONS.map((buttonInfo) => {
             return (
               <Link
