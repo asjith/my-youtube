@@ -13,11 +13,15 @@ const appSlice = createSlice({
     closeSideBar: (state) => {
       state.isSideBarOpen = false;
     },
+    openSideBar: (state) => {
+      state.isSideBarOpen = true;
+    },
     setIsOnline: (state, action) => {
       state.isOnline = action.payload;
     },
   },
 });
 
-export const { toggleSideBar, closeSideBar, setIsOnline } = appSlice.actions;
+export const { toggleSideBar, closeSideBar, setIsOnline, openSideBar } =
+  appSlice.actions;
 export default appSlice.reducer;

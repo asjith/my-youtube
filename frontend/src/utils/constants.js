@@ -344,3 +344,10 @@ export const USER_OFFLINE_ERROR_KEYWORDS = [
   "ERR_NETWORK_CHANGED",
   "No internet connection",
 ];
+
+export const BREAKPOINTS = {
+  mobile: 0,
+  tablet: 768,
+  desktop: 1024,
+  largeDesktop: 1440,
+};

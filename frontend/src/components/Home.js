@@ -2,9 +2,11 @@ import Header from "./Header";
 import Body from "./Body";
 import useCheckOnlineOffline from "../hooks/useCheckOnlineOffline";
 import ImmediateOfflineDetection from "./ImmediateOfflineDetection";
+import useBreakpoints from "../hooks/useBreakpoints";
 
 const Home = () => {
   useCheckOnlineOffline();
+  useBreakpoints();
 
   return (
     <div className="relative">
