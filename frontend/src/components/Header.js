@@ -114,7 +114,7 @@ const Header = () => {
       <div className="mx-auto my-0 col-span-10 relative" ref={searchRef}>
         <form className="flex justify-center " onSubmit={handleSubmit}>
           <input
-            className="border border-gray-400 w-52 px-3 rounded-l-full text-xs md:w-96"
+            className="border border-gray-400 w-32 px-3 rounded-l-full text-xs md:w-96"
             type="text"
             placeholder="Search"
             value={search}
