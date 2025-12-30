@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import React, { useRef, useState } from "react";
 
 const SideBar = () => {
+  const [buttonClickedId, setButtonClickedId] = useState(0);
   const isSideBarOpen = useSelector((store) => store.app.isSideBarOpen);
 
   if (!isSideBarOpen) return null;
@@ -15,13 +16,27 @@ const SideBar = () => {
           <React.Fragment key={buttonInfo.id}>
             {buttonInfo.id === 0 ? (
               <Link to="/">
-                <button className="w-full text-left px-4 py-2 text-xs rounded-md bg-gray-200 font-bold">
+                <button
+                  className={
+                    "w-full text-left px-4 py-2 text-xs rounded-md hover:bg-gray-200  " +
+                    (buttonClickedId === buttonInfo.id &&
+                      "  bg-gray-200 font-bold  ")
+                  }
+                  onClick={() => setButtonClickedId(0)}
+                >
                   {buttonInfo.name}
                 </button>
               </Link>
             ) : (
               <Link to="/comingSoon">
-                <button className="w-full text-left px-4 py-2 text-xs rounded-md hover:bg-gray-200">
+                <button
+                  className={
+                    "w-full text-left px-4 py-2 text-xs rounded-md hover:bg-gray-200 " +
+                    (buttonClickedId === buttonInfo.id &&
+                      "  bg-gray-200 font-bold  ")
+                  }
+                  onClick={() => setButtonClickedId(buttonInfo.id)}
+                >
                   {buttonInfo.name}
                 </button>
               </Link>
