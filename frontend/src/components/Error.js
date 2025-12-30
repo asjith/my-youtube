@@ -3,9 +3,11 @@ import errorURL from "../icons/error.png";
 
 const Error = ({ onClick }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 h-52 text-xs md:h-96">
+    <div className="flex flex-col items-center justify-center gap-2 h-56 text-xs md:h-96">
       <img src={errorURL} alt="error" />
-      <h1 className="text-lg md:text-xl ">Sorry, something went wrong</h1>
+      <h1 className="text-lg text-center md:text-xl ">
+        Sorry, something went wrong
+      </h1>
       <p>Please try again</p>
       <button
         type="button"
