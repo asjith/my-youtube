@@ -6,7 +6,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "*"
   })
 );
 
@@ -20,13 +20,18 @@ app.get("/api/suggestions", async (req, res) => {
       "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=" +
         req.query.q
     );
-    if (!data.ok) throw new Error(`HTTP error! status: ${data.status}`);
+    if (!data.ok) {
+      res.status(data.status).json({
+        error: `HTTP error, ${data.status} ${data.statusText} at ${data.url} 
+        (${new Date().toISOString()})`
+      });
+      return;
+    }
+
     const json = await data.json();
     res.json(json);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: `Failed to fetch suggestions: ${error.message}` });
+    res.status(500).json({ error: `Network error: ${error}` });
   }
 });
 
