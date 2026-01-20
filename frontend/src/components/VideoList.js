@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { YOUTUBE_API } from "../utils/constants";
 import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
@@ -6,78 +6,61 @@ import { useSelector } from "react-redux";
 import Offline from "./Offline";
 import Loading from "./Loading";
 import Error from "./Error";
-import { checkOfflineError } from "../utils/helperFunctions";
+import { useQuery } from "@tanstack/react-query";
 
 const VideoList = () => {
-  const [videoInfo, setVideoInfo] = useState([]);
-  const [displayOffline, setDisplayOffline] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [retry, setRetry] = useState(false);
-  const [error, setError] = useState(false);
-  const throttleFlag = useRef(true);
   const isOnline = useSelector((store) => store.app.isOnline);
+  const prevIsOnline = useRef(isOnline);
+
+  const fetchYoutubeVideos = async () => {
+    const data = await fetch(YOUTUBE_API);
+
+    if (!data.ok)
+      throw new Error(
+        `HTTP error, ${data.status} ${data.statusText} at ${data.url} (${new Date().toISOString()})`
+      );
+
+    const json = await data.json();
+
+    return json.items;
+  };
+
+  const {
+    data: videoInfo,
+    isLoading,
+    isError,
+    error,
+    refetch
+  } = useQuery({
+    queryKey: ["videos"],
+    queryFn: fetchYoutubeVideos,
+    retry: 0,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false
+  });
 
   useEffect(() => {
-    if (videoInfo.length > 0) return;
-    fetchYoutubeVideoDatas();
-  }, [isOnline, retry]);
-
-  const fetchYoutubeVideoDatas = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      setDisplayOffline(false);
-      const data = await fetch(YOUTUBE_API);
-
-      if (!data.ok) {
-        console.error("HTTP Error:", {
-          status: data.status,
-          statusText: data.statusText,
-          url: data.url,
-          timestamp: new Date().toISOString(),
-        });
-        setError(true);
-        setVideoInfo([]);
-      } else {
-        const json = await data.json();
-
-        setVideoInfo(json.items);
-      }
-    } catch (error) {
-      //network issue
-      if (!navigator.onLine || checkOfflineError(error.message))
-        setDisplayOffline(true);
-      else {
-        console.error("Network Error ", error);
-        setError(true);
-        setVideoInfo([]);
-      }
+    if (!prevIsOnline.current && isOnline) {
+      refetch();
     }
-    setLoading(false);
-    setRetry(false);
-  };
+    prevIsOnline.current = isOnline;
+  }, [isOnline]);
 
-  const handleRetry = () => {
-    if (throttleFlag.current) {
-      setRetry(true);
-      throttleFlag.current = false;
-      setTimeout(() => {
-        throttleFlag.current = true;
-      }, 3000);
+  if (isLoading) return <Loading />;
+
+  if (isError) {
+    if (!navigator.onLine) return <Offline refetch={refetch} />;
+    else {
+      console.error(error);
+      return <Error refetch={refetch} />;
     }
-  };
-
-  if (loading) return <Loading />;
-
-  if (displayOffline) return <Offline onClick={handleRetry} />;
-
-  if (error) return <Error onClick={handleRetry} />;
-
-  if (videoInfo.length === 0) return null;
+  }
 
   return (
     <div className="m-4 grid  gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {videoInfo.map((info) => (
+      {videoInfo?.map((info) => (
         <Link to={"/watch?v=" + info.id} key={info.id}>
           <VideoCard info={info} />
         </Link>

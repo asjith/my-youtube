@@ -1,6 +1,7 @@
+import { useRef } from "react";
 import noWifiURL from "../icons/noWifi.png";
 
-const Offline = ({ onClick }) => {
+const Offline = ({ refetch }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 h-52 text-xs md:h-96">
       <img src={noWifiURL} alt="no-wifi" />
@@ -9,7 +10,7 @@ const Offline = ({ onClick }) => {
       <button
         type="button"
         className="px-4 py-2 m-2 rounded-full font-bold border border-gray-400 hover:bg-gray-400"
-        onClick={onClick}
+        onClick={refetch}
       >
         Retry
       </button>

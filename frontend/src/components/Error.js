@@ -1,7 +1,7 @@
 import React from "react";
 import errorURL from "../icons/error.png";
 
-const Error = ({ onClick }) => {
+const Error = ({ refetch }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 h-56 text-xs md:h-96">
       <img src={errorURL} alt="error" />
@@ -12,7 +12,7 @@ const Error = ({ onClick }) => {
       <button
         type="button"
         className="px-4 py-2 m-2 rounded-full font-bold border border-gray-400 hover:bg-gray-400"
-        onClick={onClick}
+        onClick={refetch}
       >
         Retry
       </button>
