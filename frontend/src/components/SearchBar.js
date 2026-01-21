@@ -1,22 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND } from "../utils/constants";
-import { cacheResults } from "../utils/searchSlice";
 import searchURL from "../icons/search.svg";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSearchSuggestions } from "../utils/api";
 
 const SearchBar = () => {
   const [search, setSearch] = useState("");
+  const [searchKey, setSearchKey] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectSuggestion, setSelectSuggestion] = useState({
     event: null,
     index: -1
   });
   const searchRef = useRef(null);
-  const dispatch = useDispatch();
-  const searchCache = useSelector((store) => store.search);
-  const isOnline = useSelector((store) => store.app.isOnline);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,57 +23,41 @@ const SearchBar = () => {
   }, []);
 
   const handleShowSearchSuggestions = (e) => {
-    if (!searchRef.current.contains(e.target)) setShowSuggestions(false);
+    if (!searchRef.current.contains(e.target)) setSuggestions([]);
   };
 
+  const { data, isError, error } = useQuery({
+    enabled: searchKey !== "",
+    queryKey: ["suggestions", searchKey],
+    queryFn: () => fetchSearchSuggestions(searchKey),
+    retry: 0,
+    staleTime: Infinity,
+    gcTime: 1000 * 60 * 5,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false
+  });
+
   useEffect(() => {
-    console.log("trigger");
-    if (!isOnline) return;
-    if (selectSuggestion.index != -1) return;
+    if (search === "" || selectSuggestion.index !== -1) return;
+
     //debounce
     const timer = setTimeout(() => {
-      console.log("debounce", search);
-      if (searchCache[search]) {
-        setSuggestions(searchCache[search]);
-        setShowSuggestions(true);
-      } else {
-        if (search !== "") fetchSearchSuggestions();
-      }
+      setSearchKey(search);
     }, 200);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [search, isOnline]);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  useEffect(() => {
+    if (data?.length > 0) setSuggestions(data);
+  }, [data]);
 
   useEffect(() => {
     if (selectSuggestion.index == -1) return;
     if (selectSuggestion.event == "mouseEnter") return;
-    setSearch(suggestions[selectSuggestion.index]);
-  }, [selectSuggestion]);
 
-  const fetchSearchSuggestions = async () => {
-    try {
-      const data = await fetch(
-        YOUTUBE_SEARCH_SUGGESTIONS_API_FROM_BACKEND + search
-      );
-      if (!data.ok) {
-        console.error("HTTP Error", {
-          status: data.status,
-          statusText: data.statusText,
-          url: data.url,
-          timestamp: new Date().toISOString()
-        });
-      } else {
-        const json = await data.json();
-        setSuggestions(json[1]);
-        if (json[1]?.length > 0) setShowSuggestions(true);
-        dispatch(cacheResults({ [search]: json[1] }));
-      }
-    } catch (error) {
-      console.error("Network Error", error);
-    }
-  };
+    setSearch(suggestions?.[selectSuggestion.index]);
+  }, [selectSuggestion]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -86,10 +66,19 @@ const SearchBar = () => {
       navigate("/results?search_query=" + search);
     }
 
+    resetValues();
+  };
+
+  const resetValues = () => {
     setSearch("");
-    setShowSuggestions(false);
+    setSearchKey("");
+    setSuggestions([]);
     setSelectSuggestion({ event: null, index: -1 });
   };
+
+  if (isError) {
+    console.error(error);
+  }
 
   return (
     <div className="mx-auto my-0 col-span-10 relative" ref={searchRef}>
@@ -105,7 +94,7 @@ const SearchBar = () => {
               setSelectSuggestion({
                 event: "keyDown",
                 index:
-                  selectSuggestion.index < suggestions.length - 1
+                  selectSuggestion.index < suggestions?.length - 1
                     ? selectSuggestion.index + 1
                     : 0
               });
@@ -115,7 +104,7 @@ const SearchBar = () => {
                 index:
                   selectSuggestion.index > 0
                     ? selectSuggestion.index - 1
-                    : suggestions.length - 1
+                    : suggestions?.length - 1
               });
             } else {
               setSelectSuggestion({ event: null, index: -1 });
@@ -126,10 +115,7 @@ const SearchBar = () => {
           <button
             type="button"
             className="absolute right-11"
-            onClick={() => {
-              setSearch("");
-              setSelectSuggestion({ event: null, index: -1 });
-            }}
+            onClick={resetValues}
           >
             &#10005;
           </button>
@@ -142,21 +128,17 @@ const SearchBar = () => {
           />
         </button>
       </form>
-      {showSuggestions && (
+      {suggestions?.length > 0 && (
         <div className="absolute bg-white px-2 py-2 text-xs font-bold border border-gray-200 rounded-md shadow-lg w-52 md:w-96">
           <ul>
-            {suggestions.map((suggestion, index) => (
+            {suggestions?.map((suggestion, index) => (
               <Link to={"/results?search_query=" + suggestion} key={suggestion}>
                 <li
                   className={
                     "px-1 py-2 cursor-default rounded-md" +
                     (selectSuggestion.index === index && " bg-gray-200")
                   }
-                  onClick={() => {
-                    setShowSuggestions(false);
-                    setSearch("");
-                    setSelectSuggestion({ event: null, index: -1 });
-                  }}
+                  onClick={resetValues}
                   onMouseEnter={() => {
                     setSelectSuggestion({
                       event: "mouseEnter",
