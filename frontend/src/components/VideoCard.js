@@ -1,35 +1,28 @@
-import { useEffect, useState } from "react";
-import { CHANNEL_API } from "../utils/constants";
 import profileURL from "../icons/profile.png";
+import { useQuery } from "@tanstack/react-query";
+import { fetchYoutubeChannelDetails } from "../utils/api";
 
 const VideoCard = ({ info, calledFrom }) => {
-  const [channelInfo, setChannelInfo] = useState(null);
-
   const { snippet, statistics } = info;
   const { channelTitle, title, thumbnails, publishedAt } = snippet;
 
-  useEffect(() => {
-    fetchYoutubeChannelData();
-  }, []);
+  const {
+    data: channelInfo,
+    isError,
+    error
+  } = useQuery({
+    queryKey: ["channels", snippet.channelId],
+    queryFn: () => fetchYoutubeChannelDetails(snippet.channelId),
+    retry: 0,
+    staleTime: Infinity,
+    gcTime: 1000 * 60 * 5,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false
+  });
 
-  const fetchYoutubeChannelData = async () => {
-    try {
-      const data = await fetch(CHANNEL_API + snippet.channelId);
-      if (!data.ok) {
-        console.error("HTTP Error", {
-          status: data.status,
-          statusText: data.statusText,
-          url: data.url,
-          timestamp: new Date().toISOString(),
-        });
-      } else {
-        const json = await data.json();
-        setChannelInfo(json.items[0].snippet);
-      }
-    } catch (error) {
-      console.error("Network Error", error);
-    }
-  };
+  if (isError) {
+    console.error(error);
+  }
 
   const views =
     statistics?.viewCount / 1000000 < 1

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { YOUTUBE_API } from "../utils/constants";
 import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -7,23 +6,11 @@ import Offline from "./Offline";
 import Loading from "./Loading";
 import Error from "./Error";
 import { useQuery } from "@tanstack/react-query";
+import { fetchYoutubeVideos } from "../utils/api";
 
 const VideoList = () => {
   const isOnline = useSelector((store) => store.app.isOnline);
   const prevIsOnline = useRef(isOnline);
-
-  const fetchYoutubeVideos = async () => {
-    const data = await fetch(YOUTUBE_API);
-
-    if (!data.ok)
-      throw new Error(
-        `HTTP error, ${data.status} ${data.statusText} at ${data.url} (${new Date().toISOString()})`
-      );
-
-    const json = await data.json();
-
-    return json.items;
-  };
 
   const {
     data: videoInfo,
