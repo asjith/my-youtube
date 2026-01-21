@@ -40,7 +40,7 @@ const Watch = () => {
     setDisplayOffline(true);
   };
 
-  if (dispatchOffline) return <Offline onClick={handleRetry} />;
+  if (dispatchOffline) return <Offline refetch={handleRetry} />;
 
   return (
     <div className="col-span-9 m-2 p-2">
